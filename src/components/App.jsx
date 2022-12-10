@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 
 import { Button } from './Button/Button';
 import { ImageGallery } from './ImageGallery/ImageGallery';
@@ -22,20 +21,19 @@ export class App extends Component {
       return { showModal: !prev.showModal };
     });
   };
-
-  // updateQuery = q => {
-  //   this.setState(prevState => {
-  //     return { query: q };
-  //   });
-  // };
+  toggleLoader = isLoader => {
+    this.setState(() => {
+      return { showLoader: isLoader };
+    });
+  };
   updateResult = event => {
-    console.log('update result');
+    this.toggleLoader(true);
     event.preventDefault();
     const { page } = this.state;
     const query = event.target.elements.query.value.toLowerCase();
     try {
       getAPI(query, page).then(response => {
-        console.log(response);
+        this.toggleLoader(false);
         this.setState(prev => {
           return { resultImg: response, query: query };
         });
@@ -45,6 +43,7 @@ export class App extends Component {
     }
   };
   nextPage = () => {
+    this.toggleLoader(true);
     this.setState(prev => {
       return { page: prev.page + 1 };
     });
@@ -52,6 +51,7 @@ export class App extends Component {
     console.log(query, page);
     try {
       getAPI(query, page + 1).then(response => {
+        this.toggleLoader(false);
         this.setState(prev => {
           return { resultImg: [...prev.resultImg, ...response], query: query };
         });
@@ -67,12 +67,13 @@ export class App extends Component {
         <Searchbar onSubmit={this.updateResult} page={this.state.page} />
         <ImageGallery images={this.state.resultImg} toggle={this.toggleModal} />
         {this.state.resultImg.length > 0 && <Button nextPage={this.nextPage} />}
-        <Loader />
+
         {this.state.showModal && (
           <Modal toggle={this.toggleModal}>
             <h2>Modalochka</h2>
           </Modal>
         )}
+        {this.state.showLoader && <Loader />}
       </>
     );
   }

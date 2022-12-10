@@ -9,7 +9,6 @@ export function ImageGalleryItem({
       className="gallery-item"
       onClick={() => {
         toggle();
-        console.log('click!');
       }}
     >
       <img src={webformatURL} alt={tags} />

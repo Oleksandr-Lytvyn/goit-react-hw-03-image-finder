@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export async function getAPI(q, page) {
+  // console.log(q, page);
   const {
     data: { hits },
   } = await axios.get(

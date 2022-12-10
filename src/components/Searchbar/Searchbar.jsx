@@ -2,13 +2,13 @@ import { onClick } from '../helpers/getAPI';
 // const arr = onClick();
 // console.log(arr);
 
-export function Searchbar({ onSubmit, page }) {
+export function Searchbar({ onSubmit }) {
   return (
     <header className="searchbar">
       <form
         className="form"
         onSubmit={event => {
-          return onClick(event, onSubmit, page);
+          return onSubmit(event);
         }}
       >
         <button type="submit" className="button">

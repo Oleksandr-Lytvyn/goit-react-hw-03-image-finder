@@ -1,12 +1,12 @@
-import { onLoadMore } from '../helpers/getAPI';
+// import { onLoadMore } from '../helpers/getAPI';
 
-export function Button({ query, updateResult, updatePage, page }) {
+export function Button({ nextPage }) {
   return (
     <button
       type="button"
       onClick={() => {
         // updatePage();
-        onLoadMore(query, updateResult, page);
+        nextPage();
         // updateResult();
       }}
     >

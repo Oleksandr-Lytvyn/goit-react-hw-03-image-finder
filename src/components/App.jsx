@@ -37,49 +37,36 @@ export class App extends Component {
       getAPI(query, page).then(response => {
         console.log(response);
         this.setState(prev => {
-          return { resultImg: response };
+          return { resultImg: response, query: query };
         });
       });
     } catch (error) {
       console.log(error);
     }
-    // if (query === this.state.query) {
-    //   this.setState(prevState => {
-    //     return {
-    //       resultImg: [...prevState.resultImg, ...arr],
-    //       page: prevState.page + 1,
-    //       query: query,
-    //     };
-    //   });
-    // } else {
-    //   this.setState(prevState => {
-    //     return {
-    //       resultImg: [...arr],
-    //       page: 1,
-    //       query: query,
-    //     };
-    //   });
-    // }
   };
-  // updatePage = () => {
-  //   this.setState(prev => {
-  //     return { page: prev.page + 1 };
-  //   });
-  // };
+  nextPage = () => {
+    this.setState(prev => {
+      return { page: prev.page + 1 };
+    });
+    const { query, page } = this.state;
+    console.log(query, page);
+    try {
+      getAPI(query, page + 1).then(response => {
+        this.setState(prev => {
+          return { resultImg: [...prev.resultImg, ...response], query: query };
+        });
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   render() {
     return (
       <>
         <Searchbar onSubmit={this.updateResult} page={this.state.page} />
         <ImageGallery images={this.state.resultImg} toggle={this.toggleModal} />
-        {/* {this.state.resultImg.length > 0 && (
-          <Button
-            query={this.state.query}
-            updateResult={this.updateResult}
-            updatePage={this.updatePage}
-            page={this.state.page}
-          />
-        )} */}
+        {this.state.resultImg.length > 0 && <Button nextPage={this.nextPage} />}
         <Loader />
         {this.state.showModal && (
           <Modal toggle={this.toggleModal}>

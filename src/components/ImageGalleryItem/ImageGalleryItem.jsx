@@ -1,17 +1,22 @@
+import { GalleryItem, GalleryItemImg } from './ImageGalleryItem.styled';
+
 export function ImageGalleryItem({
   webformatURL,
   largeImageURL,
   tags,
   toggle,
+  updateLargeImg,
 }) {
   return (
-    <li
+    <GalleryItem
       className="gallery-item"
-      onClick={() => {
+      onClick={event => {
+        console.log(event);
+        updateLargeImg(largeImageURL);
         toggle();
       }}
     >
-      <img src={webformatURL} alt={tags} />
-    </li>
+      <GalleryItemImg src={webformatURL} alt={tags} />
+    </GalleryItem>
   );
 }

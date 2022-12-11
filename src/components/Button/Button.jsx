@@ -1,16 +1,19 @@
 // import { onLoadMore } from '../helpers/getAPI';
+import { ButtonLoadMore, ButtonSection } from './Button.styled';
 
 export function Button({ nextPage }) {
   return (
-    <button
-      type="button"
-      onClick={() => {
-        // updatePage();
-        nextPage();
-        // updateResult();
-      }}
-    >
-      load more
-    </button>
+    <ButtonSection>
+      <ButtonLoadMore
+        type="button"
+        onClick={() => {
+          // updatePage();
+          nextPage();
+          // updateResult();
+        }}
+      >
+        load more
+      </ButtonLoadMore>
+    </ButtonSection>
   );
 }

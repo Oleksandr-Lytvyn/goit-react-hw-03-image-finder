@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import { Button } from './Button/Button';
 import { ImageGallery } from './ImageGallery/ImageGallery';
@@ -14,8 +15,14 @@ export class App extends Component {
     resultImg: [],
     showModal: false,
     showLoader: false,
+    largeImg: '',
   };
 
+  updateLargeImg = link => {
+    this.setState(() => {
+      return { largeImg: link };
+    });
+  };
   toggleModal = () => {
     this.setState(prev => {
       return { showModal: !prev.showModal };
@@ -31,6 +38,11 @@ export class App extends Component {
     event.preventDefault();
     const { page } = this.state;
     const query = event.target.elements.query.value.toLowerCase();
+    if (query === '') {
+      this.toggleLoader(false);
+      return alert('type anything');
+    }
+
     try {
       getAPI(query, page).then(response => {
         this.toggleLoader(false);
@@ -65,12 +77,16 @@ export class App extends Component {
     return (
       <>
         <Searchbar onSubmit={this.updateResult} page={this.state.page} />
-        <ImageGallery images={this.state.resultImg} toggle={this.toggleModal} />
+        <ImageGallery
+          images={this.state.resultImg}
+          toggle={this.toggleModal}
+          updateLargeImg={this.updateLargeImg}
+        />
         {this.state.resultImg.length > 0 && <Button nextPage={this.nextPage} />}
 
         {this.state.showModal && (
           <Modal toggle={this.toggleModal}>
-            <h2>Modalochka</h2>
+            <img src={this.state.largeImg} alt={this.state.query}></img>
           </Modal>
         )}
         {this.state.showLoader && <Loader />}
@@ -78,3 +94,16 @@ export class App extends Component {
     );
   }
 }
+
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func,
+  page: PropTypes.number,
+};
+ImageGallery.propTypes = {
+  images: PropTypes.array,
+  toggle: PropTypes.func,
+  updateLargeImg: PropTypes.func,
+};
+Modal.propTypes = {
+  toggle: PropTypes.func,
+};

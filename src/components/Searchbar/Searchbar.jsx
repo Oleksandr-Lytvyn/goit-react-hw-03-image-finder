@@ -1,21 +1,28 @@
-import { onClick } from '../helpers/getAPI';
+// import { onClick } from '../helpers/getAPI';
 // const arr = onClick();
 // console.log(arr);
+import { Header } from './Searchbar.styled';
+import { SearchForm } from './Searchbar.styled';
+import { SearchFormButton } from './Searchbar.styled';
+import { SearchFormButtonLabel } from './Searchbar.styled';
+import { SearchFormInput } from './Searchbar.styled';
 
 export function Searchbar({ onSubmit }) {
   return (
-    <header className="searchbar">
-      <form
+    <Header className="searchbar">
+      <SearchForm
         className="form"
         onSubmit={event => {
           return onSubmit(event);
         }}
       >
-        <button type="submit" className="button">
-          <span className="button-label">Search</span>
-        </button>
+        <SearchFormButton type="submit" className="button">
+          <SearchFormButtonLabel className="button-label">
+            Search
+          </SearchFormButtonLabel>
+        </SearchFormButton>
 
-        <input
+        <SearchFormInput
           className="input"
           name="query"
           type="text"
@@ -23,7 +30,7 @@ export function Searchbar({ onSubmit }) {
           autoFocus
           placeholder="Search images and photos"
         />
-      </form>
-    </header>
+      </SearchForm>
+    </Header>
   );
 }

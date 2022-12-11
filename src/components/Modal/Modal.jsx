@@ -20,10 +20,15 @@ export class Modal extends Component {
       return this.props.toggle();
     }
   };
+  handleOnClick = e => {
+    if (e.currentTarget === e.target) {
+      return this.props.toggle();
+    }
+  };
 
   render() {
     return createPortal(
-      <ModalBackdrop className="modal_backdrop">
+      <ModalBackdrop className="modal_backdrop" onClick={this.handleOnClick}>
         <ModalWindow className="modal__content">
           {this.props.children}
         </ModalWindow>

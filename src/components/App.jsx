@@ -40,10 +40,16 @@ export class App extends Component {
       return { showLoader: isLoader };
     });
   };
+  resetPage = () => {
+    this.setState(() => {
+      return { page: 1 };
+    });
+  };
   updateResult = event => {
     this.toggleLoader(true);
     event.preventDefault();
-    const { page } = this.state;
+    // const { page } = this.state;
+    this.resetPage();
     const query = event.target.elements.query.value.toLowerCase();
     if (query === '') {
       this.toggleLoader(false);
@@ -51,7 +57,7 @@ export class App extends Component {
     }
 
     try {
-      getAPI(query, page).then(response => {
+      getAPI(query, 1).then(response => {
         this.updateShowNoResults(false);
         response.length === 0 && this.updateShowNoResults(true);
         this.toggleLoader(false);
@@ -62,6 +68,7 @@ export class App extends Component {
     } catch (error) {
       console.log(error);
     }
+    event.target.elements.query.value = '';
   };
   nextPage = () => {
     this.toggleLoader(true);

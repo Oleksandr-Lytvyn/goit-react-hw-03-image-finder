@@ -52,6 +52,7 @@ export class App extends Component {
 
     try {
       getAPI(query, page).then(response => {
+        this.updateShowNoResults(false);
         response.length === 0 && this.updateShowNoResults(true);
         this.toggleLoader(false);
         this.setState(prev => {

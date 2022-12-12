@@ -7,6 +7,7 @@ import { Loader } from './Loader/Loader';
 import { Modal } from './Modal/Modal';
 import { Searchbar } from './Searchbar/Searchbar';
 import { getAPI } from './helpers/getAPI';
+import { NoResultsBox } from './NoResultsBox/NoResultsBox';
 
 export class App extends Component {
   state = {
@@ -15,9 +16,15 @@ export class App extends Component {
     resultImg: [],
     showModal: false,
     showLoader: false,
+    showNoResults: false,
     largeImg: '',
   };
 
+  updateShowNoResults = bool => {
+    this.setState(prev => {
+      return { showNoResults: bool };
+    });
+  };
   updateLargeImg = link => {
     this.setState(() => {
       return { largeImg: link };
@@ -45,6 +52,7 @@ export class App extends Component {
 
     try {
       getAPI(query, page).then(response => {
+        response.length === 0 && this.updateShowNoResults(true);
         this.toggleLoader(false);
         this.setState(prev => {
           return { resultImg: response, query: query };
@@ -83,6 +91,7 @@ export class App extends Component {
           updateLargeImg={this.updateLargeImg}
         />
         {this.state.resultImg.length > 0 && <Button nextPage={this.nextPage} />}
+        {this.state.showNoResults === true && <NoResultsBox />}
 
         {this.state.showModal && (
           <Modal toggle={this.toggleModal}>

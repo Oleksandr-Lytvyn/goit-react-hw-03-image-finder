@@ -17,6 +17,7 @@ export class App extends Component {
     showModal: false,
     showLoader: false,
     showNoResults: false,
+    showButton: false,
     largeImg: '',
   };
 
@@ -28,6 +29,11 @@ export class App extends Component {
   updateLargeImg = link => {
     this.setState(() => {
       return { largeImg: link };
+    });
+  };
+  toggleButton = bool => {
+    this.setState(() => {
+      return { showButton: bool };
     });
   };
   toggleModal = () => {
@@ -58,11 +64,16 @@ export class App extends Component {
 
     try {
       getAPI(query, 1).then(response => {
+        const images = response.data.hits;
+        const total = response.data.total;
+        total / 12 <= this.state.page
+          ? this.toggleButton(false)
+          : this.toggleButton(true);
         this.updateShowNoResults(false);
-        response.length === 0 && this.updateShowNoResults(true);
+        images.length === 0 && this.updateShowNoResults(true);
         this.toggleLoader(false);
         this.setState(prev => {
-          return { resultImg: response, query: query };
+          return { resultImg: images, query: query };
         });
       });
     } catch (error) {
@@ -79,9 +90,14 @@ export class App extends Component {
     console.log(query, page);
     try {
       getAPI(query, page + 1).then(response => {
+        const images = response.data.hits;
+        const total = response.data.total;
+        total / 12 <= this.state.page
+          ? this.toggleButton(false)
+          : this.toggleButton(true);
         this.toggleLoader(false);
         this.setState(prev => {
-          return { resultImg: [...prev.resultImg, ...response], query: query };
+          return { resultImg: [...prev.resultImg, ...images], query: query };
         });
       });
     } catch (error) {
@@ -98,7 +114,7 @@ export class App extends Component {
           toggle={this.toggleModal}
           updateLargeImg={this.updateLargeImg}
         />
-        {this.state.resultImg.length > 0 && <Button nextPage={this.nextPage} />}
+        {this.state.showButton && <Button nextPage={this.nextPage} />}
         {this.state.showNoResults === true && <NoResultsBox />}
 
         {this.state.showModal && (

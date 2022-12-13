@@ -2,13 +2,11 @@ import axios from 'axios';
 
 export async function getAPI(q, page) {
   // console.log(q, page);
-  const {
-    data: { hits },
-  } = await axios.get(
+  const data = await axios.get(
     `https://pixabay.com/api/?q=${q}&page=${page}&key=30541781-d1cfd5170773e7eb644cb816c&image_type=photo&orientation=horizontal&per_page=12`
   );
-  // console.log(hits);
-  return hits;
+  // console.log(data.data.hits);
+  return data;
 }
 
 export async function onClick(event, updateResult, page) {
